@@ -41,6 +41,38 @@ async function run() {
       const result = await visaCollection.insertOne(newVisa);
       res.send(result);
     })
+
+    app.get('/visa/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await visaCollection.findOne(query);
+      res.send(result)
+    })
+
+    app.put('/visa/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const options = {upsert : true}
+      const updatedVisa = req.body;
+      const visa = {
+        $set: {
+          countryImageUrl: updatedVisa.countryImageUrl,
+          countryName: updatedVisa.countryName,
+          visaType: updatedVisa.visaType,
+          processingTime: updatedVisa.processingTime,
+          validPassport: updatedVisa.validPassport,
+          visaApplicationForm: updatedVisa.visaApplicationForm,
+          passportPhoto: updatedVisa.passportPhoto,
+          bio: updatedVisa.bio,
+          ageRestriction: updatedVisa.ageRestriction,
+          fee: updatedVisa.fee,
+          validity: updatedVisa.validity,
+          applicationMethod: updatedVisa.applicationMethod
+      }
+      }
+      const result = await visaCollection.updateOne(query, visa, options)
+      res.send(result)
+    })
     
     app.delete('/visa/:id', async(req, res) => {
       const id = req.params.id;
@@ -49,6 +81,22 @@ async function run() {
       const result = await visaCollection.deleteOne(query);
       res.send(result)
       console.log(result)
+    })
+
+
+    // Visa Application
+    const visaApplicationCollection = client.db('visaDB').collection('visaApplications')
+    app.get('/visa-application', async(req, res) => {
+      const cursor = visaApplicationCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    app.post('/visa-application', async(req, res) => {
+      const visaApplication = req.body;
+      console.log(visaApplication)
+      const result = await visaApplicationCollection.insertOne(visaApplication);
+      res.send(result);
     })
 
     // Send a ping to confirm a successful connection
