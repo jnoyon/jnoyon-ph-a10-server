@@ -98,6 +98,15 @@ async function run() {
       const result = await visaApplicationCollection.insertOne(visaApplication);
       res.send(result);
     })
+    app.delete('/visa-application/:id', async(req, res) => {
+      const id = req.params.id;
+      console.log(id)
+      const query = {_id: new ObjectId(id)}
+      const result = await visaApplicationCollection.deleteOne(query);
+      res.send(result)
+      console.log(result)
+    })
+
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
