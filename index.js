@@ -37,7 +37,6 @@ async function run() {
 
     app.post('/visa', async(req, res) => {
       const newVisa = req.body;
-      console.log(newVisa)
       const result = await visaCollection.insertOne(newVisa);
       res.send(result);
     })
@@ -76,11 +75,9 @@ async function run() {
     
     app.delete('/visa/:id', async(req, res) => {
       const id = req.params.id;
-      console.log(id)
       const query = {_id: new ObjectId(id)}
       const result = await visaCollection.deleteOne(query);
       res.send(result)
-      console.log(result)
     })
 
 
@@ -94,17 +91,14 @@ async function run() {
 
     app.post('/visa-application', async(req, res) => {
       const visaApplication = req.body;
-      console.log(visaApplication)
       const result = await visaApplicationCollection.insertOne(visaApplication);
       res.send(result);
     })
     app.delete('/visa-application/:id', async(req, res) => {
       const id = req.params.id;
-      console.log(id)
       const query = {_id: new ObjectId(id)}
       const result = await visaApplicationCollection.deleteOne(query);
       res.send(result)
-      console.log(result)
     })
 
 
